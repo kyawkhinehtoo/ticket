@@ -1,0 +1,346 @@
+-- MySQL dump 10.13  Distrib 8.0.27, for macos11 (arm64)
+--
+-- Host: 127.0.0.1    Database: ticket
+-- ------------------------------------------------------
+-- Server version	8.0.27
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `company`
+--
+
+DROP TABLE IF EXISTS `company`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `company` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `maincon_id` bigint unsigned DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `company`
+--
+
+LOCK TABLES `company` WRITE;
+/*!40000 ALTER TABLE `company` DISABLE KEYS */;
+INSERT INTO `company` VALUES (1,'CirrusLink Technologies Pte. Ltd','#17-10, The Metropolis Tower 2\n11 North Buona Vista Drive\nSingapore 138589',3,NULL,'2024-03-11 19:42:50','2025-04-10 00:10:02'),(2,'NovaEdge Systems Pte. Ltd','#08-06, One Raffles Place Tower 1\n1 Raffles Place\nSingapore 048616',4,NULL,'2024-03-11 19:42:56','2025-04-10 00:09:27');
+/*!40000 ALTER TABLE `company` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contract`
+--
+
+DROP TABLE IF EXISTS `contract`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contract` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` bigint unsigned NOT NULL,
+  `contract_from` date NOT NULL,
+  `contract_to` date NOT NULL,
+  `type` enum('case','hourly') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'case',
+  `default` int NOT NULL,
+  `extra` int NOT NULL DEFAULT '0',
+  `file` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contract`
+--
+
+LOCK TABLES `contract` WRITE;
+/*!40000 ALTER TABLE `contract` DISABLE KEYS */;
+INSERT INTO `contract` VALUES (1,1,'2024-03-01','2024-03-20','case',50,0,'[\"contracts\\/contract-Change Request .pdf\",\"contracts\\/contract-SPL Dec.pdf\"]',NULL,'2024-03-11 20:50:41','2024-03-20 11:13:34'),(2,2,'2024-03-01','2025-06-22','hourly',50,0,'[\"contracts\\/01HS5DBGN1H5WFYAKRWRZH1PCT.pdf\"]',NULL,'2024-03-16 22:15:06','2025-04-24 23:14:05'),(3,1,'2025-02-01','2025-05-31','hourly',50,0,'[]',NULL,'2025-04-01 23:19:07','2025-04-10 00:12:06');
+/*!40000 ALTER TABLE `contract` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `failed_jobs`
+--
+
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `failed_jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `failed_jobs`
+--
+
+LOCK TABLES `failed_jobs` WRITE;
+/*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `incident`
+--
+
+DROP TABLE IF EXISTS `incident`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `incident` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `start_date` date DEFAULT NULL,
+  `start_time` time DEFAULT NULL,
+  `close_date` date DEFAULT NULL,
+  `close_time` time DEFAULT NULL,
+  `type` enum('Onsite','Remote') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `topic` enum('PC','Server','Network','Other') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PC',
+  `assigned_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pic_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_by` bigint unsigned NOT NULL,
+  `company_id` bigint unsigned DEFAULT NULL,
+  `contract_id` bigint unsigned DEFAULT NULL,
+  `status` enum('Open','Escalated','WIP','Close') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Open',
+  `service_report` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `incident`
+--
+
+LOCK TABLES `incident` WRITE;
+/*!40000 ALTER TABLE `incident` DISABLE KEYS */;
+INSERT INTO `incident` VALUES (1,'2025-04-10','14:27:20','2025-04-10','14:28:52','Remote','McAfee Antivirus is about to expire. ','PC','[\"4\"]','Alex',2,2,1,'Close','\"service_report\\/01JRF9MFA1GYKHG3E3FETDMNAP.pdf\"',NULL,'2025-04-10 00:25:35','2025-04-10 00:29:06'),(2,'2025-04-22','19:14:54',NULL,NULL,'Onsite','Hello world ','Server','[\"6\",\"10\"]','Albert',2,1,1,'Open',NULL,NULL,'2025-04-10 04:18:28','2025-04-22 05:15:03'),(3,'2025-04-23','19:14:35',NULL,NULL,'Onsite','Hello world ','PC','[]','Albert',2,2,1,'Open',NULL,NULL,'2025-04-10 04:20:17','2025-04-22 05:14:37'),(4,'2025-04-21','19:14:18',NULL,NULL,'Onsite','Hello world ','PC','[\"4\"]','Albert',2,2,1,'Open',NULL,NULL,'2025-04-10 04:21:25','2025-04-22 05:14:25'),(5,'2025-04-21','19:14:00','2025-04-21','20:22:19','Remote','Hello world ','PC','[\"3\"]','Albert',2,2,1,'Close','\"service_report\\/01JSP42XSEDME90HS1ZMXE67DP.pdf\"',NULL,'2025-04-10 04:21:51','2025-04-25 02:22:31'),(6,'2025-04-22','19:13:45',NULL,NULL,'Onsite','Hello world ','PC','[]','Albert',2,2,1,'Open',NULL,NULL,'2025-04-10 04:23:26','2025-04-22 05:13:50'),(7,'2025-04-22','19:13:19','2025-04-22','20:11:51','Onsite','Hello world ','PC','[\"3\"]','Albert',2,1,1,'Close','\"service_report\\/01JSNS6883JT10TXKQ4VFGV9JY.pdf\"',NULL,'2025-04-10 04:35:59','2025-04-25 02:22:49'),(8,'2025-04-23','13:16:43','2025-04-23','14:17:06','Onsite','Test','PC','[\"3\",\"6\"]','Albert',2,2,1,'Close','\"service_report\\/01JSGMPXEQKRJD5PMX8YAB6KTF.pdf\"',NULL,'2025-04-22 23:15:14','2025-04-24 22:37:18');
+/*!40000 ALTER TABLE `incident` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `maincon`
+--
+
+DROP TABLE IF EXISTS `maincon`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `maincon` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `maincon`
+--
+
+LOCK TABLES `maincon` WRITE;
+/*!40000 ALTER TABLE `maincon` DISABLE KEYS */;
+INSERT INTO `maincon` VALUES (3,'Nexora Technologies Pte Ltd','01JRF7TZYT1GC34QPFMFDGZZAX.png','12 Fusionopolis Way, #15-01 Innovis Tower, Singapore 138635',NULL,'2025-04-09 23:53:39','2025-04-09 23:57:43'),(4,'ByteForge Solutions Pte Ltd','01JRF81Z131Y3BKTGVNQ71RZ7P.png','29 Ayer Rajah Crescent, #03-05 Launchpad @ one-north, Singapore 139965',NULL,'2025-04-09 23:53:53','2025-04-10 00:01:31');
+/*!40000 ALTER TABLE `maincon` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `migrations`
+--
+
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `migrations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `migrations`
+--
+
+LOCK TABLES `migrations` WRITE;
+/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2024_03_10_121545_create_company_table',2),(6,'2024_03_10_121926_create_contract_table',2),(7,'2024_03_11_063812_create_incident_table',2),(8,'2024_03_11_065558_update_user_table',2),(9,'2024_03_11_100216_add_company_to_user',2),(10,'2024_03_11_063813_create_incident_table',3),(11,'2024_03_11_063814_create_incident_table',4),(12,'2024_03_11_063815_create_incident_table',5),(13,'2024_03_17_113011_create_maincon_table',6),(14,'2024_03_17_113518_add_maincon_to_user',6),(15,'2024_03_17_113519_add_maincon_to_user',7),(16,'2024_03_17_120934_add_maincom_to_company',8),(17,'2024_03_20_163043_add_contract_id_to_incident',9),(18,'2025_04_10_105831_create_smtp_settings_table',10);
+/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `password_reset_tokens`
+--
+
+DROP TABLE IF EXISTS `password_reset_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `password_reset_tokens` (
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `password_reset_tokens`
+--
+
+LOCK TABLES `password_reset_tokens` WRITE;
+/*!40000 ALTER TABLE `password_reset_tokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `password_reset_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `personal_access_tokens`
+--
+
+DROP TABLE IF EXISTS `personal_access_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint unsigned NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `personal_access_tokens`
+--
+
+LOCK TABLES `personal_access_tokens` WRITE;
+/*!40000 ALTER TABLE `personal_access_tokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `smtp_settings`
+--
+
+DROP TABLE IF EXISTS `smtp_settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `smtp_settings` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `provider` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'custom',
+  `host` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `port` int NOT NULL,
+  `encryption` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'tls',
+  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `from_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `from_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `smtp_settings`
+--
+
+LOCK TABLES `smtp_settings` WRITE;
+/*!40000 ALTER TABLE `smtp_settings` DISABLE KEYS */;
+INSERT INTO `smtp_settings` VALUES (1,'gmail','smtp.gmail.com',587,'tls','ossbss.db@gmail.com','ioibidttnxarxdcs','ossbss.db@gmail.com','OSS',1,'2025-04-10 04:12:17','2025-04-10 04:13:06');
+/*!40000 ALTER TABLE `smtp_settings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `company_id` bigint unsigned DEFAULT NULL,
+  `maincon_id` bigint unsigned DEFAULT NULL,
+  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'admin',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `disabled` int NOT NULL DEFAULT '0',
+  `last_login_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_login_time` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Kyaw Khine Htoo','kyawkhinehtoo@hotmail.com',NULL,'$2y$12$DFjWZqTkIFjZR6RXY42HBOeKrVc4ha1D9lAH819nbTny2KCT0LRNG','09420043911',NULL,NULL,'admin',NULL,NULL,'2024-03-11 19:26:50','2025-04-10 00:13:06',0,NULL,NULL),(2,'Albert Htoo','admin@gmail.com',NULL,'$2y$12$7O8dLpCUTNEF6SGKZBUjueNcf8FfoJGTe0sIoDMS3.Ov2I.Vl4kEC','0912121212',1,NULL,'company',NULL,NULL,'2024-03-11 19:56:59','2024-03-19 22:54:27',0,NULL,NULL),(3,'Aung Moe','aungmoe@gmail.com',NULL,'$2y$12$IQpQaStZCUt9Y.tOLbb3VuGFMT1WM.gLpEgYu9vq7yoz2rGdDz6jm','09232323',NULL,NULL,'engineer',NULL,NULL,'2024-03-11 22:03:58','2025-04-10 00:06:01',0,NULL,NULL),(4,'Sithu','sithu@gmail.com',NULL,'$2y$12$2eIsP1MbzggLfE9FkXET5O6CW9Edw9iDcRqW0ErA6VDxT.LSWrblS','09090909',NULL,NULL,'engineer',NULL,NULL,'2024-03-11 22:04:17','2024-03-11 22:04:17',0,NULL,NULL),(5,'Keely Goff','ponep@mailinator.com',NULL,'$2y$12$ljD.yFPh.rjIV8rJAQPrP.BYiTrp0KfTIrvh9d6tO8mHAfJHsf0cK','097727605',NULL,3,'maincon',NULL,NULL,'2024-03-12 05:29:04','2025-04-09 23:54:14',0,NULL,NULL),(6,'Mg Mg','mgmg@gmail.com',NULL,'$2y$12$tuN3YXG7d8CEl8kEbchVpemgBH32uMjkpfQjXyb1N9VeW.RcYuHS.','09232323',NULL,NULL,'engineer',NULL,NULL,'2024-03-12 08:44:44','2024-03-12 08:44:44',0,NULL,NULL),(7,'Kyaw Kyaw','admin1@gmail.com',NULL,'$2y$12$z9mqEyfM/uBgvwEe4eUS8.a0ZbNZ59eFipY8hN1fiDvxgPwsCU51S','092323232',2,NULL,'company','2024-03-15 03:11:08',NULL,'2024-03-12 10:33:24','2024-03-15 03:11:08',0,NULL,NULL),(8,'Mo Mi Ji','momiji@gmail.com',NULL,'$2y$12$JpSIZF.zDPVUVrFMakmrG.JVczIfKFYcf4qzfQPbHh9vHoWucqXrW','092323232',2,NULL,'company','2024-03-15 03:11:08',NULL,'2024-03-12 11:01:38','2024-03-15 03:11:08',0,NULL,NULL),(9,'Mee Mee','memee@gmail.com',NULL,'$2y$12$MQXX4iRhjxvF69kMaEIm3ObNwdrluoVHMa9cpnNMD1cstLHQboY5q','0923232323',1,NULL,'company','2024-03-15 03:11:08',NULL,'2024-03-12 11:02:11','2024-03-15 03:11:08',0,NULL,NULL),(10,'Zark','zark@gmail.com',NULL,'$2y$12$xT7VIiB.NeePPWDsAX.aLeh1wBRZDa8EgI2ZHJBMmBL8ivmJM.TJq','0912312321',NULL,NULL,'engineer',NULL,NULL,'2024-03-17 07:31:19','2024-03-17 07:37:25',0,NULL,NULL),(11,'Afron','afron@gmail.com',NULL,'$2y$12$R5nc3XeP9eehggJeJ6hJv.hpqP4ocaGtEsl77LWJsWY8cV92KADIm','0923232323',NULL,NULL,'engineer',NULL,NULL,'2024-03-17 07:36:15','2024-03-17 07:39:04',0,NULL,NULL);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'ticket'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-04-26 19:54:35
