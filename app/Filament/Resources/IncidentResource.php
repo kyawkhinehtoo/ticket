@@ -72,8 +72,8 @@ class IncidentResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('type')
                             ->options([
-                                'Onsite' => 'Onsite Support (Min 30 Mins)',
-                                'Remote' => 'Remote Support (Min 2 Hrs)',
+                                'Onsite' => 'Onsite Support (Min 2 Hrs)',
+                                'Remote' => 'Remote Support (Min 30 Mins)',
                             ])
                             ->required()
                             ->default('admin'),
