@@ -24,6 +24,10 @@ class CompanyResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
     protected static ?string $navigationGroup = 'System';
     protected static ?int $navigationSort = 2;
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role !== 'engineer';
+    }
     public static function form(Form $form): Form
     {
         return $form

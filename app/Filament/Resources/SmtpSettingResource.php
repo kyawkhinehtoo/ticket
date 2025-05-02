@@ -17,7 +17,10 @@ class SmtpSettingResource extends Resource
     protected static ?string $model = SmtpSetting::class;
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
     protected static ?string $navigationGroup = 'Settings';
-
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role !== 'engineer';
+    }
     public static function form(Form $form): Form
     {
         return $form

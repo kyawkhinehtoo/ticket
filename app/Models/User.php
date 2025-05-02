@@ -28,9 +28,11 @@ class User extends Authenticatable  implements FilamentUser, HasAvatar
     public function canAccessPanel(Panel $panel): bool
     {
         if ($panel->getId() === 'admin') {
+            if ($this->role === 'engineer') {
+                return true;
+            }
             return ($this->role !== 'company' && $this->role !== 'maincon');
         }
-
 
         return true;
     }
@@ -72,11 +74,15 @@ class User extends Authenticatable  implements FilamentUser, HasAvatar
     {
         return ($this->role === 'admin' || $this->role === 'engineer');
     }
-
+    public function isEngineer()
+    {
+        return ($this->role === 'engineer');
+    }
     public function isClient()
     {
         return ($this->role === 'company' || $this->role === 'maincon');
     }
+
     public function company()
     {
         return $this->belongsTo(Company::class);

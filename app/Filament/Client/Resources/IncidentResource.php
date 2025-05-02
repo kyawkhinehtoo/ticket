@@ -233,11 +233,24 @@ class IncidentResource extends Resource
     }
     public static function getEloquentQuery(): Builder
     {
-        $company = Company::join('users', 'users.company_id', 'company.id')
-            ->where('users.id', auth()->id())
-            ->first();
+        $user = auth()->user();
+        if ($user->role === 'maincon') {
+            // Get all company IDs for this maincon
+            $companyIds = \App\Models\Company::where('maincon_id', $user->maincon_id)->pluck('id');
+        } else {
+            // Default: just the user's company
+            $company = \App\Models\Company::join('users', 'users.company_id', 'company.id')
+                ->where('users.id', $user->id)
+                ->select('company.id')
+                ->first();
+            $companyIds = [$company->id];
+        }
 
-        return parent::getEloquentQuery()->where('company_id', $company?->id)->withoutGlobalScopes([
+        // $company = Company::join('users', 'users.company_id', 'company.id')
+        //     ->where('users.id', auth()->id())
+        //     ->first();
+
+        return parent::getEloquentQuery()->whereIn('company_id',$companyIds)->withoutGlobalScopes([
             SoftDeletingScope::class,
         ]);
     }

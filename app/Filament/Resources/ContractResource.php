@@ -23,6 +23,10 @@ class ContractResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-link';
     protected static ?string $navigationGroup = 'System';
     protected static ?int $navigationSort = 3;
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role !== 'engineer';
+    }
     public static function form(Form $form): Form
     {
         return $form

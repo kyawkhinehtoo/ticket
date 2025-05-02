@@ -24,7 +24,10 @@ class Reports extends Page implements HasTable
     
     public ?string $companyId = null;
     public $debugInfo = [];
-    
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role !== 'engineer';
+    }
     public function mount(): void
     {
         $this->form->fill();

@@ -28,6 +28,9 @@ class LoginResponse extends \Filament\Http\Responses\Auth\LoginResponse
 
             if (Auth::check()) {
                 $user = Auth::user();
+                if ($user->isEngineer()) {
+                    return redirect('/admin/incidents');
+                }
                 if ($user->isAdmin()) {
                     return redirect('/admin');
                 }

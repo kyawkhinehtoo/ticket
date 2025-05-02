@@ -23,7 +23,10 @@ class MainConResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
     protected static ?string $navigationGroup = 'System';
     protected static ?string $navigationLabel = 'Main Con';
-
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role !== 'engineer';
+    }
     public static function form(Form $form): Form
     {
         return $form
