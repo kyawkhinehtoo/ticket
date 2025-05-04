@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\MainconResource\RelationManagers;
+namespace App\Filament\Resources\MainConResource\RelationManagers;
 
 use App\Models\MainCon;
 use Filament\Forms;

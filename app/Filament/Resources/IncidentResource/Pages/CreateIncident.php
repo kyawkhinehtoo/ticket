@@ -15,24 +15,30 @@ class CreateIncident extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['created_by'] = auth()->id();
-        $company = Company::join('users', 'users.company_id', 'company.id')
-            ->where('users.id', auth()->id())
-            ->first();
-
-        if (!$company)
+        $user = auth()->user();
+        if ($user->role === 'admin') {
+            // Admin selects company from form
+            $company = Company::where('id', $data['company_id'])->first();
+        } else {
+            // Non-admin: use user's company
+            $company = Company::join('users', 'users.company_id', 'company.id')
+                ->select('company.id')
+                ->where('users.id', $user->id)
+                ->first();
+            if ($company) {
+                $data['company_id'] = $company->id;
+            }
+        }
+        if (!$company) {
+          
             return abort('403', 'Unauthorized Action !');
-
-        $data['company_id'] = $company->id;
-
-
-        $contract = Contract::join('company', 'company.id', 'contract.company_id')
-            ->join('users', 'users.company_id', 'company.id')
-            ->where('users.id', auth()->id())
+        }
+        $contract = Contract::where('company_id', $company->id)
             ->whereDate('contract_to', '>=', Carbon::now())
             ->first();
-        if (!$contract)
+        if (!$contract) {
             return abort('403', 'No Active Contract !');
-
+        }
         $data['contract_id'] = $contract->id;
         return $data;
     }

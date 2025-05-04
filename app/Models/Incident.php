@@ -30,12 +30,14 @@ class Incident extends Model
         'contract_id',
         'status',
         'service_report',
+        'is_adhoc',
         // Remove deleted_at from fillable as SoftDeletes handles this
     ];
     
     protected $casts = [
         'service_report' => 'array',
         'assigned_id' => 'array',
+        'is_adhoc' => 'boolean',
     ];
     
     protected $dates = [

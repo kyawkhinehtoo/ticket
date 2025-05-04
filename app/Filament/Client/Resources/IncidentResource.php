@@ -61,6 +61,7 @@ class IncidentResource extends Resource
                         ->inline()
                         ->inlineLabel(false)
                         ->required(),
+                    
                     Forms\Components\Textarea::make('description')
                         ->placeholder('Enter your issue details')
                         ->columnSpanFull()
@@ -99,6 +100,11 @@ class IncidentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('close_time')
                     ->toggleable(isToggledHiddenByDefault: true),
+                    Tables\Columns\TextColumn::make('is_adhoc')
+                    ->label('Request Type')
+                    ->formatStateUsing(fn (bool $state): string => $state ? 'Adhoc' : 'Contract')
+                    ->badge()
+                    ->color(fn (bool $state): string => $state ? 'warning' : 'success'),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->icon(fn (string $state): string => match ($state) {
@@ -124,7 +130,7 @@ class IncidentResource extends Resource
                     ->formatStateUsing(function ($state) {
                         // Assuming $value is an array of tag names
                         $user = User::where('id', $state)->first();
-                        return $user->name;
+                        return $user?$user->name:null;
                     })
                     ->searchable(),
 
@@ -158,8 +164,12 @@ class IncidentResource extends Resource
                             ->label('Created By'),
                         TextEntry::make('topic')
                             ->label('Topic'),
-                        TextEntry::make('description')
-                            ->columnSpanFull(),
+                        TextEntry::make('is_adhoc')
+                            ->label('Request Type')
+                            ->formatStateUsing(fn (bool $state): string => $state ? 'Adhoc' : 'Contract')
+                            ->badge()
+                            ->color(fn (bool $state): string => $state ? 'warning' : 'success'),
+                        TextEntry::make('description'),
                     ])
                     ->columnSpan(3)
                     ->columns(2)
@@ -195,7 +205,7 @@ class IncidentResource extends Resource
                             ->formatStateUsing(function ($state) {
                                 // Assuming $value is an array of tag names
                                 $user = User::where('id', $state)->first();
-                                return $user->name;
+                                return $user?$user->name:null;
                             })
                             ->visible(static fn (Model $model) => ($model->assigned_id) ? true : false),
 

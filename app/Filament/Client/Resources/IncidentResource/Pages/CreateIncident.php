@@ -30,6 +30,7 @@ class CreateIncident extends CreateRecord
     {
         $data['created_by'] = auth()->id();
         $company = Company::join('users', 'users.company_id', 'company.id')
+            ->select('company.id')
             ->where('users.id', auth()->id())
             ->first();
 

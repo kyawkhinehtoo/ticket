@@ -60,11 +60,13 @@ class IncidentResource extends Resource
                             ->required(),
                         Forms\Components\TextInput::make('pic_name')
                             ->label('Company PIC Name')
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->required(),
                         Forms\Components\Select::make('company_id')
                             ->label('Company')
                             ->options(Company::all()->pluck('name', 'id'))
-                            ->searchable(),
+                            ->searchable()
+                            ->required(),
 
                     ])
                     ->columns(2),
@@ -74,6 +76,7 @@ class IncidentResource extends Resource
                             ->options([
                                 'Onsite' => 'Onsite Support (Min 2 Hrs)',
                                 'Remote' => 'Remote Support (Min 1 Hrs)',
+                                
                             ])
                             ->required()
                             ->default('admin'),
@@ -88,6 +91,9 @@ class IncidentResource extends Resource
                             ->inline()
                             ->inlineLabel(false)
                             ->required(),
+                        Forms\Components\Checkbox::make('is_adhoc')
+                            ->label('Ad-hoc Service (Non Contract)')
+                            ->default(false),
                     ])
                     ->columns(2),
                 Section::make()
@@ -137,6 +143,10 @@ class IncidentResource extends Resource
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('topic'),
+                Tables\Columns\TextColumn::make('is_adhoc')
+                    ->formatStateUsing(fn (bool $state): string => $state ? 'Adhoc' : 'Contract')
+                    ->badge()
+                    ->color(fn (bool $state): string => $state ? 'warning' : 'success'),
                 Tables\Columns\TextColumn::make('assigned_id')
                     ->label("Engineer")
                     ->badge()
@@ -145,14 +155,17 @@ class IncidentResource extends Resource
                         // Assuming $value is an array of tag names
 
                         $user = User::where('id', $state)->first();
-                        return $user->name;
+                        
+                        return $user?$user->name:null;
                     })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('pic_name')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('company.name')
-                    ->numeric()
+                    ->formatStateUsing(fn (string $state): string => 
+                        strlen($state) > 8 ? substr($state, 0, 8) . '...' : $state
+                    )
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('updated_at')
