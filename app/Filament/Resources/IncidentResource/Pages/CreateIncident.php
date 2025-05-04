@@ -33,6 +33,11 @@ class CreateIncident extends CreateRecord
           
             return abort('403', 'Unauthorized Action !');
         }
+        // Check if is_adhoc is true
+        if (isset($data['is_adhoc']) && $data['is_adhoc'] == true) {
+            // No need to check contract or assign contract_id
+            return $data;
+        }
         $contract = Contract::where('company_id', $company->id)
             ->whereDate('contract_to', '>=', Carbon::now())
             ->first();

@@ -87,6 +87,13 @@ class IncidentResource extends Resource
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('topic')->searchable(),
+                    // Show company name if user is maincon
+                Tables\Columns\TextColumn::make('company.name')
+                    ->label('Company')
+                    ->visible(function () {
+                        $user = auth()->user();
+                        return $user && $user->role === 'maincon';
+                    }),
                 Tables\Columns\TextColumn::make('pic_name')->label('PIC')->searchable(),
                 Tables\Columns\TextColumn::make('start_date')
                     ->date()
@@ -169,6 +176,13 @@ class IncidentResource extends Resource
                             ->formatStateUsing(fn (bool $state): string => $state ? 'Adhoc' : 'Contract')
                             ->badge()
                             ->color(fn (bool $state): string => $state ? 'warning' : 'success'),
+                        // Show company name if user is maincon
+                        TextEntry::make('company.name')
+                            ->label('Company')
+                            ->visible(function () {
+                                $user = auth()->user();
+                                return $user && $user->role === 'maincon';
+                            }),
                         TextEntry::make('description'),
                     ])
                     ->columnSpan(3)

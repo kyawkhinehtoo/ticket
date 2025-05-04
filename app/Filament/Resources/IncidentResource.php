@@ -144,6 +144,7 @@ class IncidentResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('topic'),
                 Tables\Columns\TextColumn::make('is_adhoc')
+                    ->label('Request Type')
                     ->formatStateUsing(fn (bool $state): string => $state ? 'Adhoc' : 'Contract')
                     ->badge()
                     ->color(fn (bool $state): string => $state ? 'warning' : 'success'),
